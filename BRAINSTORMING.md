@@ -5,7 +5,7 @@
    - A mobile app that helps users build habits through photo-based tracking — instead of checking boxes, users take quick daily snapshots (e.g., of their gym session, meal, or study notes) to record progress visually. The app uses image recognition to verify consistency and send gentle reminders when habits are missed.
 3. AR Parking Finder
    - An app that helps users locate available parking spots in real time using crowdsourced data and augmented reality overlays. (might be hard)
-4. Study Group Finder
+4. Study Sync
    - An app for college students to find or create study groups for their classes. Users can filter by their university and course code to see open groups, or post a new group with a time, location, and topic.
 5. Social Hydration Tracker
    - A simple app focused on one thing: drinking water. Users can set a daily goal and log their intake, but the main feature is creating 3-day or week hydration challenges with friends to keep each other motivated and accountable with a shared progress view.
@@ -15,7 +15,7 @@
 ## Top 3 New App Ideas
 1. Fitness App
 2. Photo-based Habit Tracker
-3. Study Group Finder
+3. Study Sync
 
 ## New App Ideas - Evaluate and Categorize
 1. Fitness App
@@ -34,10 +34,12 @@
    - **Habit:** High. It's designed for daily use. The action of "snapping a photo" is quick, rewarding, and a great way to build a habit loop.
    - **Scope:** Medium. The core loop (create habit, get reminder, take photo, see a visual log/streak)
 
-3. Study Group Finder
+3. Study Sync
    - **Description**: An app for college students to find or create study groups for their classes. Users can filter by their university and course code to see open groups, or post a new group with a time, location, and topic.
    - **Mobile:** Medium. This could be a website, but it becomes uniquely mobile if you use location ("find groups studying nearby") and push notifications ("a new group for your class just posted!").
    - **Story:** Compelling & Clear. "Stop studying alone. Find a group for your exact class." The value is crystal clear.
    - **Market:** Niche, The market is "all college students," which is a huge and well-defined audience.
    - **Habit:** Medium, use is seasonal. It would be heavily used around midterms and finals, but less so at the start of a semester.
    - **Scope:** Medium, the core app (profiles, create/join groups, filter by school/class) is very easy to do.
+
+Final App Idea: Study Sync
