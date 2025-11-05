@@ -36,8 +36,8 @@ Optional Features
 * **Login/Sign Up Screen:** User creates an account or logs in. [R1]
 * **Dashboard (Search) Screen:** The main screen where a user can search/filter for study groups by course. [R3]
 * **Create Group Screen:** A form for a user to fill out the details for a new group. [R2]
-* **My Groups Screen:** A list of all groups the user has either created or joined. [R4]
-* **Group Detail Screen:** Shows all information for one specific group (topic, time, member list) and has the "Join" button. [R4]
+* **My Groups Screen:** A list of all groups the user has either created or joined. [O3]
+* **Group Detail Screen:** Shows all information for one specific group (topic, time, member list) and has the "Join" button. [O3]
 * **(Optional) Group Chat Screen:** A chat interface for a group the user has joined. [O1]
 
 3. Navigation
@@ -58,4 +58,18 @@ Flow Navigation (Screen to Screen)
 
 
 Wireframes
+
 <img width="632" height="747" alt="image" src="https://github.com/user-attachments/assets/0eb9c9dc-df90-479d-b5cf-7a96402b556a" />
+
+
+[BONUS] Digital Wireframes & Mockups
+
+https://www.figma.com/design/KHHRsBzn2f3zIEYtskbwGO/Study-Sync?node-id=0-1&p=f&t=xKBeJ1kG4dJgQAI5-0
+
+
+[BONUS] Interactive Prototype
+
+![studysyncgif](https://github.com/user-attachments/assets/1638d3b6-333b-49ef-83a5-d456caa2a050)
+
+
+
