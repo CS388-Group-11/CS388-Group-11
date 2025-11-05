@@ -69,8 +69,3 @@ https://www.figma.com/design/KHHRsBzn2f3zIEYtskbwGO/Study-Sync?node-id=0-1&p=f&t
 ## [BONUS] Interactive Prototype
 
 ![studysyncgif](https://github.com/user-attachments/assets/2c31cdbe-d262-4779-947b-8641ce799d39)
-
-
-## [BONUS] Interactive Prototype
-
-![studysyncgif](https://github.com/user-attachments/assets/1638d3b6-333b-49ef-83a5-d456caa2a050)
