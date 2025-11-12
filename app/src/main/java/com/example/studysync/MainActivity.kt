@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        // Set default
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.nav_host_fragment, LoginFragment())
