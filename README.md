@@ -26,7 +26,9 @@ StudySync is a mobile app designed to help college students connect and form stu
 ### 1. User Features (Required and Optional)
 **Required Features**
 * **R1: User Authentication:** User can sign up for an account (ideally verifying their university) and log in.
-* **R2: Create Study Group:** User can create a new public group listing, including **Course Code** (e.g., CS-490), **Topic** (e.g., "Midterm Prep"), **Time/Date**, and **Location** (e.g., "Library 2nd Floor" or "Discord Link").
+  
+[x] completed R2: Create Study Group:** User can create a new public group listing, including **Course Code** (e.g., CS-490), **Topic** (e.g., "Midterm Prep"), **Time/Date**, and **Location** (e.g., "Library 2nd Floor" or "Discord Link").
+
 * **R3: Search/View Groups:** User can see a list of all active groups for their university, and can filter this list by course code.
 
 **Optional Features**
@@ -69,3 +71,9 @@ https://www.figma.com/design/KHHRsBzn2f3zIEYtskbwGO/Study-Sync?node-id=0-1&p=f&t
 ## [BONUS] Interactive Prototype
 
 ![studysyncgif](https://github.com/user-attachments/assets/2c31cdbe-d262-4779-947b-8641ce799d39)
+
+
+## Unit 8: Group Milestone 2 Progress Gif
+
+![studysyncgif](https://github.com/user-attachments/assets/31c9d8ab-01c4-4ffa-9162-cd63df704125)
+
