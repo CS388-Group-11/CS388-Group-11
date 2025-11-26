@@ -25,6 +25,7 @@ StudySync is a mobile app designed to help college students connect and form stu
 
 ### 1. User Features (Required and Optional)
 **Required Features**
+
 [x] completed R1: User Authentication: User can sign up for an account (ideally verifying their university) and log in.
   
 [x] completed R2: Create Study Group:** User can create a new public group listing, including **Course Code** (e.g., CS-490), **Topic** (e.g., "Midterm Prep"), **Time/Date**, and **Location** (e.g., "Library 2nd Floor" or "Discord Link").
