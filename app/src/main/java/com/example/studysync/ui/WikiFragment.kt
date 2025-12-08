@@ -1,8 +1,8 @@
 package com.example.studysync.ui
 
 import android.graphics.Typeface
-import android.util.Log
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +16,6 @@ import com.example.studysync.databinding.FragmentWikiBinding
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.jsoup.Jsoup
 import org.json.JSONObject
 import java.net.URLEncoder
 
@@ -27,10 +26,15 @@ class WikiFragment : Fragment() {
 
     private val client = OkHttpClient()
     private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-    private val loadedTitles = mutableSetOf<String>()
-    private lateinit var adapter: WikiAdapter
-    private val items = mutableListOf<WikiArticle>()
+    private val TAG = "WikiFragment"
+
+    private var nextSearchOffset = 0
+    private var currentQuery = ""
+    private val batchSize = 5
     private var isLoadingMore = false
+    private val loadedTitles = mutableSetOf<String>()
+    private val items = mutableListOf<WikiArticle>()
+    private lateinit var adapter: WikiAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,40 +55,23 @@ class WikiFragment : Fragment() {
         binding.searchButton.setOnClickListener {
             val query = binding.searchInput.text.toString().trim()
             if (query.isNotEmpty()) {
-                startNewSearch(query)
+                startNewSearch(query)  // fetches articles and populates the RecyclerView
             } else {
                 Toast.makeText(requireContext(), "Enter a search term.", Toast.LENGTH_SHORT).show()
             }
         }
 
-        setupScrollListener()
+        setupScrollListener()  // keeps infinite scroll ready, but nothing will load until a search
     }
+
 
     private fun startNewSearch(query: String) {
         items.clear()
         loadedTitles.clear()
         adapter.notifyDataSetChanged()
-        fetchArticle(query)
-    }
-
-    private fun parseHtmlToSections(html: String): List<WikiItem> {
-        val doc = Jsoup.parse(html)
-        val items = mutableListOf<WikiItem>()
-
-        // Select headings and paragraphs in order
-        doc.body().children().forEach { element ->
-            when {
-                element.tagName().matches(Regex("h[1-6]")) -> {
-                    val text = element.text()
-                    if (text.isNotBlank()) items.add(WikiItem.Section(text))
-                }
-                element.tagName() == "p" -> {
-                    val text = element.text()
-                    if (text.isNotBlank()) items.add(WikiItem.Paragraph(text))
-                }
-            }
-        }
-        return items
+        currentQuery = query
+        nextSearchOffset = 0
+        fetchNextBatch()
     }
 
     private fun setupScrollListener() {
@@ -95,45 +82,55 @@ class WikiFragment : Fragment() {
                 val lastVisible = layoutManager.findLastVisibleItemPosition()
 
                 if (!isLoadingMore && lastVisible >= totalItemCount - 2) {
-                    // Load next batch of related articles
-                    val nextTitle = loadedTitles.lastOrNull() ?: return
-                    fetchRelatedArticles(nextTitle)
+                    fetchNextBatch()
                 }
             }
         })
     }
-    private val TAG = "WikiFragment"
-    private fun fetchArticle(title: String) {
+
+    private fun fetchNextBatch() {
+        if (isLoadingMore) return
         isLoadingMore = true
-        val encodedTitle = URLEncoder.encode(title, "UTF-8")
-        val url =
-            "https://en.wikipedia.org/w/api.php?action=parse&page=$encodedTitle&format=json&prop=text&formatversion=2"
-        Log.d(TAG, "Fetching article: $title at URL: $url")
+
+        val encodedQuery = URLEncoder.encode(currentQuery, "UTF-8")
+        val searchUrl =
+            "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=$encodedQuery&format=json&sroffset=$nextSearchOffset&srlimit=$batchSize"
+
         coroutineScope.launch {
             try {
-                val request = Request.Builder().url(url)
+                Log.d(TAG, "Fetching search batch offset=$nextSearchOffset query=$currentQuery")
+                val request = Request.Builder().url(searchUrl)
                     .addHeader("User-Agent", "StudySyncApp/1.0")
-                    .addHeader("Accept", "application/json")
                     .build()
 
                 val response = client.newCall(request).execute()
                 val body = response.body?.string() ?: ""
-
                 val json = JSONObject(body)
-                val htmlContent = json.getJSONObject("parse").getString("text")
-                val plainText = Jsoup.parse(htmlContent).text()
+                val searchResults = json.getJSONObject("query").getJSONArray("search")
 
-                loadedTitles.add(title)
-                withContext(Dispatchers.Main) {
-                    addArticleToList(title, plainText)
+                if (searchResults.length() == 0) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(requireContext(), "No more results.", Toast.LENGTH_SHORT).show()
+                    }
+                    isLoadingMore = false
+                    return@launch
                 }
 
-                fetchRelatedArticles(title)
+                for (i in 0 until searchResults.length()) {
+                    val result = searchResults.getJSONObject(i)
+                    val title = result.getString("title")
+                    if (!loadedTitles.contains(title)) {
+                        loadedTitles.add(title)
+                        fetchArticleSummary(title)
+                    }
+                }
+
+                nextSearchOffset += batchSize
 
             } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(requireContext(), "Error fetching article: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Error fetching search batch.", Toast.LENGTH_SHORT).show()
                 }
             } finally {
                 isLoadingMore = false
@@ -141,32 +138,27 @@ class WikiFragment : Fragment() {
         }
     }
 
-    private fun fetchRelatedArticles(title: String) {
-        isLoadingMore = true
-        val encodedTitle = URLEncoder.encode(title, "UTF-8")
-        val url = "https://en.wikipedia.org/api/rest_v1/page/related/$encodedTitle"
-
+    private fun fetchArticleSummary(title: String) {
         coroutineScope.launch {
             try {
+                val encodedTitle = URLEncoder.encode(title, "UTF-8")
+                val url = "https://en.wikipedia.org/api/rest_v1/page/summary/$encodedTitle"
+                Log.d(TAG, "Fetching summary for $title: $url")
+
                 val request = Request.Builder().url(url)
                     .addHeader("User-Agent", "StudySyncApp/1.0")
                     .build()
 
                 val response = client.newCall(request).execute()
                 val body = response.body?.string() ?: return@launch
+                val json = JSONObject(body)
+                val extract = json.optString("extract", "(No summary available)")
 
-                val relatedArray = JSONObject(body).optJSONArray("pages") ?: return@launch
-                for (i in 0 until relatedArray.length()) {
-                    val obj = relatedArray.getJSONObject(i)
-                    val relatedTitle = obj.getString("title")
-                    if (!loadedTitles.contains(relatedTitle)) {
-                        fetchArticle(relatedTitle)
-                    }
+                withContext(Dispatchers.Main) {
+                    addArticleToList(title, extract)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-            } finally {
-                isLoadingMore = false
             }
         }
     }
