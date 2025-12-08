@@ -20,5 +20,9 @@
         android:id="@+id/discoverFragment"
         android:icon="@drawable/ic_discover"
         android:title="Discover" />
+    <item
+        android:id="@+id/resourcesFragment"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="Resources" />
 
 </menu>

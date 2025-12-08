@@ -7,6 +7,9 @@ plugins {
 android {
     namespace = "com.example.studysync"
     compileSdk = 36
+    buildFeatures {
+        viewBinding = true
+    }
 
     defaultConfig {
         applicationId = "com.example.studysync"
@@ -58,5 +61,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation("org.jsoup:jsoup:1.16.1")
 
 }
