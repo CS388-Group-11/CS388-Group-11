@@ -1,26 +1,22 @@
 package com.example.studysync.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.studysync.databinding.FragmentStudyGroupsBinding
 import com.example.studysync.viewmodels.GroupViewModel
+import com.google.firebase.auth.FirebaseAuth
 
-//displays other users groups NOT FULLY IMPLEMENTED YET
 class StudyGroupsFragment : Fragment() {
 
     private var _binding: FragmentStudyGroupsBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView.
-    //This is becuase _binding is not null (avoids mem leaks by nulling out oDV)
     private val binding get() = _binding!!
-
-    //Updates all the other frags when 1 frag is updated.
     private val sharedViewModel: GroupViewModel by activityViewModels()
-
     private lateinit var studyGroupAdapter: StudyGroupAdapter
 
     override fun onCreateView(
@@ -30,11 +26,29 @@ class StudyGroupsFragment : Fragment() {
         _binding = FragmentStudyGroupsBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        //connecting adapter and RecyclerView
-        studyGroupAdapter = StudyGroupAdapter()
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+
+        if (currentUserId == null) {
+            Toast.makeText(context, "Error: User not logged in.", Toast.LENGTH_LONG).show()
+        }
+
+        studyGroupAdapter = StudyGroupAdapter(
+            currentUserId = currentUserId ?: "",
+            onJoinClicked = { group ->
+                Log.d("StudyGroupsFragment", "Join clicked for group: ${group.topic}")
+                Toast.makeText(context, "Join logic for ${group.topic} not implemented yet.", Toast.LENGTH_SHORT).show()
+            },
+            onLeaveClicked = { group ->
+                Log.d("StudyGroupsFragment", "Leave clicked for group: ${group.topic}")
+                Toast.makeText(context, "Leave logic for ${group.topic} not implemented yet.", Toast.LENGTH_SHORT).show()
+            },
+            onDeleteClicked = { group ->
+                Log.d("StudyGroupsFragment", "Delete clicked for group: ${group.topic}")
+                Toast.makeText(context, "Delete logic for ${group.topic} not implemented yet.", Toast.LENGTH_SHORT).show()
+            }
+        )
         binding.groupsRecyclerView.adapter = studyGroupAdapter
 
-        //reactively update the RecyclerView whenever the list of groups in the ViewModel changes.
         sharedViewModel.groups.observe(viewLifecycleOwner) { groups ->
             studyGroupAdapter.submitList(groups.toList())
         }
@@ -42,7 +56,6 @@ class StudyGroupsFragment : Fragment() {
         return view
     }
 
-    //cheap clean up (garbage collection reclaims memory)
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

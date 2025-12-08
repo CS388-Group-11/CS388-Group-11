@@ -8,5 +8,7 @@ data class StudyGroup(
     val date: String = "",
     val location: String = "",
     val creatorUid: String = "",
+    // Add this line
+    val members: List<String> = listOf(),
     val createdAt: Long = System.currentTimeMillis()
 )

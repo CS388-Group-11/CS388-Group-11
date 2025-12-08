@@ -75,7 +75,7 @@ class CreateGroupFragment : Fragment(R.layout.fragment_create_group) {
         val newGroupRef = db.collection("groups").document()
         val newGroupId = newGroupRef.id
 
-        // Create the StudyGroup object, now including the ID
+        // Create the StudyGroup object, now including the ID and the members list
         val newGroup = StudyGroup(
             id = newGroupId,
             courseCode = courseCode,
@@ -83,7 +83,8 @@ class CreateGroupFragment : Fragment(R.layout.fragment_create_group) {
             time = time,
             date = date,
             location = location,
-            creatorUid = currentUserId
+            creatorUid = currentUserId,
+            members = listOf(currentUserId)
         )
 
         // Save the data to Firestore using .set() on the reference

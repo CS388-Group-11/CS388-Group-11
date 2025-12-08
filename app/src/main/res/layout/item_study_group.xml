@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,57 +13,80 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/group_name_text"
+            android:id="@+id/topicTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/group_date_text"
-            android:layout_marginEnd="8dp"
-            tools:text="Final Exam" />
+            tools:text="Final" />
 
         <TextView
-            android:id="@+id/group_subject_text"
+            android:id="@+id/subjectTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textStyle="italic"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/group_name_text"
-            tools:text="CS 388" />
+            app:layout_constraintTop_toBottomOf="@id/topicTextView"
+            tools:text="PHYS101" />
 
         <TextView
-            android:id="@+id/group_description_text"
+            android:id="@+id/dateTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/group_subject_text"
-            tools:text="Kupf Hall 101" />
-
-        <!-- TextView for Date -->
-        <TextView
-            android:id="@+id/group_date_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textStyle="bold"
+            android:textColor="@color/purple_500"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Dec 25" />
+            tools:text="12/29/2025" />
 
-        <!-- TextView for Time -->
         <TextView
-            android:id="@+id/group_time_text"
+            android:id="@+id/timeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textColor="@android:color/darker_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/group_date_text"
-            tools:text="7:30 PM" />
+            app:layout_constraintTop_toBottomOf="@id/dateTimeTextView"
+            tools:text="12:00am" />
+
+        <TextView
+            android:id="@+id/locationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/subjectTextView"
+            tools:text="Hall 1" />
+
+        <Button
+            android:id="@+id/joinButton"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Join"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timeTextView" />
+
+        <Button
+            android:id="@+id/leaveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Leave"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timeTextView"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <Button
+            android:id="@+id/deleteButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:textColor="@android:color/holo_red_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timeTextView"
+            android:visibility="gone"
+            tools:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

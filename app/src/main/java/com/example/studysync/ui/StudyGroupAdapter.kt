@@ -1,6 +1,7 @@
 package com.example.studysync.ui
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -8,52 +9,68 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.studysync.databinding.ItemStudyGroupBinding
 import com.example.studysync.models.StudyGroup
 
-// this adapter binds the StudyGroup data to the RecyclerView, displaying each group in the list.
-class StudyGroupAdapter : ListAdapter<StudyGroup, StudyGroupAdapter.StudyGroupViewHolder>(StudyGroupDiffCallback()) {
+class StudyGroupAdapter(
+    private val currentUserId: String?,
+    private val onJoinClicked: (StudyGroup) -> Unit,
+    private val onLeaveClicked: (StudyGroup) -> Unit,
+    private val onDeleteClicked: (StudyGroup) -> Unit
+) : ListAdapter<StudyGroup, StudyGroupAdapter.StudyGroupViewHolder>(DiffCallback) {
 
-    // Called by RecyclerView to create a new view holder when there are no existing ones to reuse.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudyGroupViewHolder {
-        // Inflate the XML layout for a single list item using ViewBinding.
-        val binding = ItemStudyGroupBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        // create a new ViewHolder instance with the inflated view.
+        val binding = ItemStudyGroupBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return StudyGroupViewHolder(binding)
     }
 
-    // called by RecyclerView to display the data at a specific position.
     override fun onBindViewHolder(holder: StudyGroupViewHolder, position: Int) {
-        // Get the data item for this position and bind it to the ViewHolder.
-        holder.bind(getItem(position))
+        val studyGroup = getItem(position)
+        holder.bind(studyGroup)
     }
 
-    // holds the view for a single item in the list, avoiding expensive findViewById calls.
     inner class StudyGroupViewHolder(private val binding: ItemStudyGroupBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        // populates the views in the list item with data from a StudyGroup object.
+
         fun bind(group: StudyGroup) {
-            binding.groupNameText.text = group.topic
-            binding.groupSubjectText.text = group.courseCode
-            binding.groupDescriptionText.text = group.location
-            binding.groupDateText.text = group.date
-            binding.groupTimeText.text = group.time
+            binding.topicTextView.text = group.topic
+            binding.subjectTextView.text = group.courseCode
+            binding.dateTimeTextView.text = group.date
+            binding.timeTextView.text = group.time
+            binding.locationTextView.text = group.location
+
+            val isMember = group.members.contains(currentUserId)
+            val isCreator = group.creatorUid == currentUserId
+
+            if (isCreator) {
+                binding.deleteButton.visibility = View.VISIBLE
+                binding.leaveButton.visibility = View.GONE
+                binding.joinButton.visibility = View.GONE
+
+                binding.deleteButton.setOnClickListener { onDeleteClicked(group) }
+
+            } else if (isMember) {
+                binding.leaveButton.visibility = View.VISIBLE
+                binding.deleteButton.visibility = View.GONE
+                binding.joinButton.visibility = View.GONE
+
+                binding.leaveButton.setOnClickListener { onLeaveClicked(group) }
+
+            } else {
+                binding.joinButton.visibility = View.VISIBLE
+                binding.leaveButton.visibility = View.GONE
+                binding.deleteButton.visibility = View.GONE
+
+                binding.joinButton.setOnClickListener { onJoinClicked(group) }
+            }
         }
     }
-}
 
-// helper class for ListAdapter to calculate the differences between two lists.
-// enables efficient updates and animations.
-class StudyGroupDiffCallback : DiffUtil.ItemCallback<StudyGroup>() {
-    // checks they have the same unique ID
-    override fun areItemsTheSame(oldItem: StudyGroup, newItem: StudyGroup): Boolean {
-        return oldItem.id == newItem.id
-    }
+    companion object DiffCallback : DiffUtil.ItemCallback<StudyGroup>() {
+        override fun areItemsTheSame(oldItem: StudyGroup, newItem: StudyGroup): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-    // checks if the data within the same item has changed.
-    override fun areContentsTheSame(oldItem: StudyGroup, newItem: StudyGroup): Boolean {
-        return oldItem == newItem
+        override fun areContentsTheSame(oldItem: StudyGroup, newItem: StudyGroup): Boolean {
+            return oldItem == newItem
+        }
     }
 }
