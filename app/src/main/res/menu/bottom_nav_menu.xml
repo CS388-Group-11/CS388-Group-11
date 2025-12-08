@@ -21,4 +21,9 @@
         android:id="@+id/navigation_create_group"
         android:icon="@android:drawable/ic_input_add"
         android:title="Create Group"/>
+    <item
+        android:id="@+id/navigation_wiki"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="Wiki"/>
+
 </menu>

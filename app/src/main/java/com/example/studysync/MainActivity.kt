@@ -1,8 +1,11 @@
 package com.example.studysync
+import com.example.studysync.R
+
 import com.example.studysync.ui.LoginFragment
 import com.example.studysync.ui.StudyGroupsFragment
 import com.example.studysync.ui.ChatsFragment
 import com.example.studysync.ui.CreateGroupFragment
+import com.example.studysync.ui.WikiFragment
 
 
 import android.os.Bundle
@@ -24,6 +27,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_study_groups -> StudyGroupsFragment()
                 R.id.navigation_chats -> ChatsFragment()
                 R.id.navigation_create_group -> CreateGroupFragment()
+                R.id.navigation_wiki -> WikiFragment()
+
                 else -> LoginFragment()
             }
             supportFragmentManager.beginTransaction()

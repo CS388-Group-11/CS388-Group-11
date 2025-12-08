@@ -26,7 +26,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val signupButton = view.findViewById<Button>(R.id.signupButton)
         val guestButton = view.findViewById<Button>(R.id.guestButton)
 
-        // LOGIN
         loginButton.setOnClickListener {
             val email = emailInput.text.toString()
             val password = passwordInput.text.toString()
@@ -47,7 +46,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 }
         }
 
-        // SIGNUP
         signupButton.setOnClickListener {
             val email = emailInput.text.toString()
             val password = passwordInput.text.toString()
@@ -68,7 +66,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 }
         }
 
-        // GUEST (ANONYMOUS LOGIN)
         guestButton.setOnClickListener {
             auth.signInAnonymously()
                 .addOnCompleteListener { task ->
