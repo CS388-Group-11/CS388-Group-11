@@ -39,6 +39,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
+    //navigates back to login screen for good user exp
     private fun navigateToLogin() {
         val navController = findNavController()
 

@@ -33,6 +33,7 @@ class MyGroupsFragment : Fragment(R.layout.fragment_my_groups) {
         fetchMyGroups()
     }
 
+    // custom RecyclerView
     private fun setupRecyclerView() {
         studyGroupAdapter = StudyGroupAdapter()
         myGroupsRecyclerView.apply {
@@ -41,6 +42,7 @@ class MyGroupsFragment : Fragment(R.layout.fragment_my_groups) {
         }
     }
 
+    //filter current user id
     private fun fetchMyGroups() {
         val currentUserId = auth.currentUser?.uid
         if (currentUserId == null) {
@@ -51,6 +53,7 @@ class MyGroupsFragment : Fragment(R.layout.fragment_my_groups) {
         db.collection("groups")
             .whereEqualTo("creatorUid", currentUserId)
             .orderBy("createdAt", Query.Direction.DESCENDING)
+            //get real-time updates
             .addSnapshotListener { snapshots, e ->
                 if (e != null) {
                     Log.w("MyGroupsFragment", "Listen failed.", e)
@@ -59,7 +62,7 @@ class MyGroupsFragment : Fragment(R.layout.fragment_my_groups) {
 
                 if (snapshots != null) {
                     val fetchedGroups = snapshots.toObjects(StudyGroup::class.java)
-
+                    // data received its sent to the StudyGroupAdapter to be displayed
                     studyGroupAdapter.submitList(fetchedGroups)
 
                     Log.d("MyGroupsFragment", "Found ${fetchedGroups.size} groups.")
