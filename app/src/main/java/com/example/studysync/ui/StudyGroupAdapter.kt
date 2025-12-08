@@ -11,31 +11,37 @@ import com.example.studysync.models.StudyGroup
 class StudyGroupAdapter : ListAdapter<StudyGroup, StudyGroupAdapter.StudyGroupViewHolder>(StudyGroupDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudyGroupViewHolder {
-        val binding = ItemStudyGroupBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemStudyGroupBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return StudyGroupViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: StudyGroupViewHolder, position: Int) {
-        val group = getItem(position)
-        holder.bind(group)
+        holder.bind(getItem(position))
     }
 
-    class StudyGroupViewHolder(private val binding: ItemStudyGroupBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class StudyGroupViewHolder(private val binding: ItemStudyGroupBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
         fun bind(group: StudyGroup) {
-            binding.groupNameText.text = group.name
-            binding.groupSubjectText.text = group.subject
-            binding.groupDescriptionText.text = group.description
+            binding.groupNameText.text = group.topic
+            binding.groupSubjectText.text = group.courseCode
+            binding.groupDescriptionText.text = group.location
+            binding.groupDateText.text = group.date
+            binding.groupTimeText.text = group.time
         }
     }
+}
 
+class StudyGroupDiffCallback : DiffUtil.ItemCallback<StudyGroup>() {
+    override fun areItemsTheSame(oldItem: StudyGroup, newItem: StudyGroup): Boolean {
+        return oldItem.id == newItem.id
+    }
 
-    class StudyGroupDiffCallback : DiffUtil.ItemCallback<StudyGroup>() {
-        override fun areItemsTheSame(oldItem: StudyGroup, newItem: StudyGroup): Boolean {
-            return oldItem.name == newItem.name
-        }
-
-        override fun areContentsTheSame(oldItem: StudyGroup, newItem: StudyGroup): Boolean {
-            return oldItem == newItem
-        }
+    override fun areContentsTheSame(oldItem: StudyGroup, newItem: StudyGroup): Boolean {
+        return oldItem == newItem
     }
 }
