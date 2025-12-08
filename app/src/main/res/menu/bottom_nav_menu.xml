@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_login"
-        android:icon="@android:drawable/ic_menu_send"
-        android:title="Login"/>
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile" />
 
     <item
-        android:id="@+id/navigation_study_groups"
-        android:icon="@android:drawable/ic_menu_agenda"
-        android:title="Study Groups"/>
+        android:id="@+id/createGroupFragment"
+        android:icon="@drawable/ic_add_circle"
+        android:title="Create" />
 
     <item
-        android:id="@+id/navigation_chats"
-        android:icon="@android:drawable/ic_menu_send"
-        android:title="Chats"/>
+        android:id="@+id/myGroupsFragment"
+        android:icon="@drawable/ic_my_groups"
+        android:title="My Groups" />
 
     <item
-        android:id="@+id/navigation_create_group"
-        android:icon="@android:drawable/ic_input_add"
-        android:title="Create Group"/>
+        android:id="@+id/discoverFragment"
+        android:icon="@drawable/ic_discover"
+        android:title="Discover" />
+
 </menu>

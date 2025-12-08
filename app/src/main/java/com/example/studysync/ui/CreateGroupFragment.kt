@@ -1,95 +1,102 @@
 package com.example.studysync.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.studysync.R
-import com.example.studysync.MainActivity
-import com.example.studysync.databinding.FragmentCreateGroupBinding
 import com.example.studysync.models.StudyGroup
-import com.example.studysync.viewmodels.GroupViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
-class CreateGroupFragment : Fragment() {
+class CreateGroupFragment : Fragment(R.layout.fragment_create_group) {
 
-    private var _binding: FragmentCreateGroupBinding? = null
-    private val binding get() = _binding!!
+    // 1. Get instances of Firebase services
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
 
-    private val sharedViewModel: GroupViewModel by activityViewModels()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentCreateGroupBinding.inflate(inflater, container, false)
-        val view = binding.root
+        // Initialize Firebase
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
 
-        val subjects = arrayOf("Math", "Computer Science", "History", "Biology", "Literature")
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, subjects)
-        binding.subjectDropdown.setAdapter(adapter)
+        // Get references to your UI elements
+        val courseCodeInput = view.findViewById<EditText>(R.id.courseCodeInput)
+        val topicInput = view.findViewById<EditText>(R.id.topicInput)
+        val timeInput = view.findViewById<EditText>(R.id.timeInput)
+        val dateInput = view.findViewById<EditText>(R.id.dateInput)
+        val locationInput = view.findViewById<EditText>(R.id.locationInput)
+        val createButton = view.findViewById<Button>(R.id.createGroupButton)
 
-        binding.createGroupButton.setOnClickListener {
-            handleCreateGroup()
+        createButton.setOnClickListener {
+            handleGroupCreation(
+                courseCodeInput,
+                topicInput,
+                timeInput,
+                dateInput,
+                locationInput
+            )
         }
-
-        return view
     }
 
-    private fun handleCreateGroup() {
-        val groupName = binding.groupNameInput.text.toString().trim()
-        val description = binding.descriptionInput.text.toString().trim()
-        val subject = binding.subjectDropdown.text.toString().trim()
+    private fun handleGroupCreation(
+        courseCodeInput: EditText,
+        topicInput: EditText,
+        timeInput: EditText,
+        dateInput: EditText,
+        locationInput: EditText
+    ) {
+        val courseCode = courseCodeInput.text.toString().trim()
+        val topic = topicInput.text.toString().trim()
+        val time = timeInput.text.toString().trim()
+        val date = dateInput.text.toString().trim()
+        val location = locationInput.text.toString().trim()
 
-        if (groupName.isEmpty()) {
-            binding.groupNameInput.error = "Group name is required"
-            binding.groupNameInput.requestFocus()
+        // Basic validation: ensure all fields are filled
+        if (courseCode.isEmpty() || topic.isEmpty() || time.isEmpty() || date.isEmpty() || location.isEmpty()) {
+            Toast.makeText(requireContext(), "Please fill in all group details.", Toast.LENGTH_LONG).show()
             return
         }
 
-        if (description.isEmpty()) {
-            binding.descriptionInput.error = "Description is required"
-            binding.descriptionInput.requestFocus()
+        // Get the current authenticated user's ID
+        val currentUserId = auth.currentUser?.uid
+        if (currentUserId == null) {
+            Toast.makeText(requireContext(), "Error: User not logged in.", Toast.LENGTH_LONG).show()
             return
         }
 
-        if (subject.isEmpty() || subject == "Select Subject") {
-            binding.subjectDropdown.error = "Please select a subject"
-            binding.subjectDropdown.requestFocus()
-            return
-        }
 
-        binding.groupNameInput.error = null
-        binding.descriptionInput.error = null
-        binding.subjectDropdown.error = null
+        // Create a reference to a new document to get its ID
+        val newGroupRef = db.collection("groups").document()
+        val newGroupId = newGroupRef.id
 
+        // Create the StudyGroup object, now including the ID and the members list
+        val newGroup = StudyGroup(
+            id = newGroupId,
+            courseCode = courseCode,
+            topic = topic,
+            time = time,
+            date = date,
+            location = location,
+            creatorUid = currentUserId,
+            members = listOf(currentUserId)
+        )
 
-        val newGroup = StudyGroup(name = groupName, description = description, subject = subject)
+        // Save the data to Firestore using .set() on the reference
+        newGroupRef.set(newGroup)
+            .addOnSuccessListener {
+                Toast.makeText(requireContext(), "Group created: ${newGroup.courseCode} - ${newGroup.topic}", Toast.LENGTH_LONG).show()
 
-        sharedViewModel.addGroup(newGroup)
+                findNavController().popBackStack()
 
-        Toast.makeText(requireContext(), "Group Created!", Toast.LENGTH_SHORT).show()
-
-        clearForm()
-
-        (activity as? MainActivity)?.findViewById<BottomNavigationView>(R.id.nav_view)?.selectedItemId = R.id.navigation_study_groups
-    }
-
-    private fun clearForm() {
-        binding.groupNameInput.text?.clear()
-        binding.descriptionInput.text?.clear()
-        binding.subjectDropdown.text?.clear()
-        binding.subjectDropdown.clearFocus()
-        binding.groupNameInput.clearFocus()
-        binding.descriptionInput.clearFocus()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Error creating group: ${e.message}", Toast.LENGTH_LONG).show()
+            }
     }
 }

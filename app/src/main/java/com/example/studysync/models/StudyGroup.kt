@@ -1,7 +1,14 @@
 package com.example.studysync.models
 
 data class StudyGroup(
-    val name: String,
-    val description: String,
-    val subject: String
+    val id: String? = null,
+    val courseCode: String = "",
+    val topic: String = "",
+    val time: String = "",
+    val date: String = "",
+    val location: String = "",
+    val creatorUid: String = "",
+    // Add this line
+    val members: List<String> = listOf(),
+    val createdAt: Long = System.currentTimeMillis()
 )

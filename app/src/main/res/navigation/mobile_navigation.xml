@@ -3,23 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.example.studysync.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/loginFragment"
+        android:name="com.example.studysync.ui.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_discoverFragment"
+            app:destination="@id/discoverFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
+    <!-- Tab 1: Profile Fragment -->
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.studysync.ui.Login.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/profileFragment"
+        android:name="com.example.studysync.ui.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 
+    <!-- Tab 2: Create Group Fragment -->
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.studysync.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/createGroupFragment"
+        android:name="com.example.studysync.ui.CreateGroupFragment"
+        android:label="Create Group"
+        tools:layout="@layout/fragment_create_group" />
+
+    <!-- Tab 3: My Groups Fragment -->
+    <fragment
+        android:id="@+id/myGroupsFragment"
+        android:name="com.example.studysync.ui.MyGroupsFragment"
+        android:label="My Groups"
+        tools:layout="@layout/fragment_my_groups" />
+
+    <!-- Tab 4: Discover Fragment -->
+    <fragment
+        android:id="@+id/discoverFragment"
+        android:name="com.example.studysync.ui.DiscoverFragment"
+        android:label="Discover"
+        tools:layout="@layout/fragment_discover" />
+
 </navigation>
