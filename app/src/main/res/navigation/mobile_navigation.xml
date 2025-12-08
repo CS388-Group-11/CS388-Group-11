@@ -44,5 +44,11 @@
         android:name="com.example.studysync.ui.DiscoverFragment"
         android:label="Discover"
         tools:layout="@layout/fragment_discover" />
+    <fragment
+        android:id="@+id/resourcesFragment"
+        android:name="com.example.studysync.ui.ResourcesFragment"
+        android:label="Resources"
+        tools:layout="@layout/fragment_resources" />
+
 
 </navigation>
