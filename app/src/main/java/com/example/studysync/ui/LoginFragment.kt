@@ -94,7 +94,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             .findNavController()
 
         // Navigate to main fragment and show navbar
-        navController.navigate(R.id.createGroupFragment)
+        navController.navigate(R.id.discoverFragment)
 
         // Show BottomNavigationView
         val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
