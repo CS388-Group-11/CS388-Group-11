@@ -26,16 +26,20 @@ StudySync is a mobile app designed to help college students connect and form stu
 ### 1. User Features (Required and Optional)
 **Required Features**
 
-[x] completed R1: User Authentication: User can sign up for an account (ideally verifying their university) and log in.
+[x] completed R1: User Authentication: User can sign up for an account and log in using FireBase Auth.
   
-[x] completed R2: Create Study Group:** User can create a new public group listing, including **Course Code** (e.g., CS-490), **Topic** (e.g., "Midterm Prep"), **Time/Date**, and **Location** (e.g., "Library 2nd Floor" or "Discord Link").
+[x] completed R2: Create Study Group: User can create a new public group listing, including **Course Code** (e.g., CS-490), **Topic** (e.g., "Midterm Prep"), **Time/Date**, and **Location** (e.g., "Library 2nd Floor" or "Discord Link").
 
-* **R3: Search/View Groups:** User can see a list of all active groups for their university, and can filter this list by course code.
+[x] completed R3: Search/View Groups: User can see a list of all active groups for their university. User can also delete there own Groups. (Groups are stored in FireStore DB)
+
+[x] completed R4: API Stream: User can scroll forver on page, data is provided by WIKI Article API.
+
 
 **Optional Features**
 * **O1: Group Chat:** A simple, built-in chat screen for each group so members can coordinate.
 * **O2: Push Notifications:** User receives a notification when someone joins their group, or when a new group is created for a course they've "favorited."
-* **O3: Join/Leave Group:** User can join a group from the list, and also leave a group they've joined.
+  
+[x] completed O3: Join/Leave Group:** User can join a group from the list, and also leave a group they've joined.
 
 ### 2. Screen Archetypes
 * **Login/Sign Up Screen:** User creates an account or logs in. [R1]
