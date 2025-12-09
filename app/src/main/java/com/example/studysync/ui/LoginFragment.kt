@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavOptions
 import com.example.studysync.MainActivity
 import com.example.studysync.R
 import androidx.navigation.ui.setupWithNavController
@@ -92,6 +93,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             .supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment)!!
             .findNavController()
+
+        val navOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.loginFragment, true) // remove login from back stack
+            .build()
+
+        navController.navigate(R.id.discoverFragment, null, navOptions)
 
         // Navigate to main fragment and show navbar
         navController.navigate(R.id.discoverFragment)
