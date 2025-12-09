@@ -89,3 +89,7 @@ https://www.figma.com/design/KHHRsBzn2f3zIEYtskbwGO/Study-Sync?node-id=0-1&p=f&t
 https://youtu.be/1jIxVfFz96A
 
 ![studysyncgifmilestone3](https://github.com/user-attachments/assets/d5a63e39-a8cd-4e72-bd37-432ab76a24f5)
+
+## Unit 10: DEMO DAY MILESTONE Youtube Video 
+
+https://youtu.be/Vo__C3wn07E
