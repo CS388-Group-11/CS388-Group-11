@@ -9,6 +9,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.studysync.MainActivity
 import com.example.studysync.R
+import androidx.navigation.ui.setupWithNavController
+
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -83,8 +88,18 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun goToMainPage() {
-        val intent = Intent(requireContext(), MainActivity::class.java)
-        startActivity(intent)
-        requireActivity().finish()
+        val navController = requireActivity()
+            .supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment)!!
+            .findNavController()
+
+        // Navigate to main fragment and show navbar
+        navController.navigate(R.id.createGroupFragment)
+
+        // Show BottomNavigationView
+        val bottomNavigationView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
+        bottomNavigationView.visibility = View.VISIBLE
+        bottomNavigationView.setupWithNavController(navController)
     }
+
 }
