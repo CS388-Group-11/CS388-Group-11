@@ -57,25 +57,22 @@ class CreateGroupFragment : Fragment(R.layout.fragment_create_group) {
         val date = dateInput.text.toString().trim()
         val location = locationInput.text.toString().trim()
 
-        // Basic validation: ensure all fields are filled
+        // Basic validation
         if (courseCode.isEmpty() || topic.isEmpty() || time.isEmpty() || date.isEmpty() || location.isEmpty()) {
             Toast.makeText(requireContext(), "Please fill in all group details.", Toast.LENGTH_LONG).show()
             return
         }
 
-        // Get the current authenticated user's ID
         val currentUserId = auth.currentUser?.uid
         if (currentUserId == null) {
             Toast.makeText(requireContext(), "Error: User not logged in.", Toast.LENGTH_LONG).show()
             return
         }
 
-
-        // Create a reference to a new document to get its ID
+        // Create new group document
         val newGroupRef = db.collection("groups").document()
         val newGroupId = newGroupRef.id
 
-        // Create the StudyGroup object, now including the ID and the members list
         val newGroup = StudyGroup(
             id = newGroupId,
             courseCode = courseCode,
@@ -87,16 +84,21 @@ class CreateGroupFragment : Fragment(R.layout.fragment_create_group) {
             members = listOf(currentUserId)
         )
 
-        // Save the data to Firestore using .set() on the reference
+        // Save to Firestore
         newGroupRef.set(newGroup)
             .addOnSuccessListener {
-                Toast.makeText(requireContext(), "Group created: ${newGroup.courseCode} - ${newGroup.topic}", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Group created: ${newGroup.courseCode} - ${newGroup.topic}",
+                    Toast.LENGTH_LONG
+                ).show()
 
-                findNavController().popBackStack()
-
+                // Navigate directly to My Groups
+                findNavController().navigate(R.id.myGroupsFragment)
             }
             .addOnFailureListener { e ->
                 Toast.makeText(requireContext(), "Error creating group: ${e.message}", Toast.LENGTH_LONG).show()
             }
     }
+
 }
